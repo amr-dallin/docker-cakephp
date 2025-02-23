@@ -13,7 +13,7 @@ services:
     networks:
       frontend:
         aliases:
-          - bucheon.local
+          - ${VIRTUAL_HOST_DEFAULT}
       backend:
 
   php:
