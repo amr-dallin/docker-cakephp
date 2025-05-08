@@ -24,10 +24,15 @@ services:
         GIT_USER_NAME: ${GIT_USER_NAME}
         GIT_USER_EMAIL: ${GIT_USER_EMAIL}
         GIT_CORE_EDITOR: ${GIT_CORE_EDITOR}
+        UID: ${HOST_UID}
+        GID: ${HOST_GID}
     container_name: ${APP_NAME}-php
+    user: "${HOST_UID}:${HOST_GID}"
+    environment:
+      HOME: "/home/amr"
     volumes:
       - ../app/:/var/www/html/
-      - ~/.ssh:/root/.ssh:ro
+      - ~/.ssh:/home/amr/.ssh:ro
     networks:
       - frontend
       - backend
@@ -43,6 +48,31 @@ services:
       - "${MYSQL_EXTERNAL_PORT}:3306"
     networks:
       - backend
+
+  queue-worker:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+      args:
+        GIT_USER_NAME: ${GIT_USER_NAME}
+        GIT_USER_EMAIL: ${GIT_USER_EMAIL}
+        GIT_CORE_EDITOR: ${GIT_CORE_EDITOR}
+        UID: ${HOST_UID}
+        GID: ${HOST_GID}
+    container_name: ${APP_NAME}-queue
+    user: "${HOST_UID}:${HOST_GID}"
+    environment:
+      HOME: "/home/amr"
+    command: bin/cake queue run --verbose
+    volumes:
+      - ../app/:/var/www/html/
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - php
+      - mysql
+    restart: on-failure
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
