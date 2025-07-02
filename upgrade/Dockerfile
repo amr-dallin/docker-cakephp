@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-buster
+FROM php:8.1-fpm-buster
 
 ARG GIT_USER_NAME
 ARG GIT_USER_EMAIL
@@ -23,7 +23,7 @@ RUN echo "deb http://http.debian.net/debian/ buster main contrib non-free" > /et
     apt-get update && \
     apt-get install --no-install-recommends -y \
     openssl git openssh-client nano build-essential curl xz-utils ca-certificates \
-    xfonts-100dpi xfonts-75dpi xfonts-base fonts-roboto fonts-noto-cjk unzip p7zip-full fonts-inconsolata \
+    xfonts-100dpi xfonts-75dpi xfonts-base fonts-roboto fonts-noto-cjk fonts-inconsolata \
     ttf-mscorefonts-installer fontconfig xorg libjpeg62-turbo && \
     curl -L https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.buster_amd64.deb -o wkhtmltox.deb && \
     dpkg -i wkhtmltox.deb && \

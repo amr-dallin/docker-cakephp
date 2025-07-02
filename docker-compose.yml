@@ -37,6 +37,28 @@ services:
       - frontend
       - backend
 
+  upgrade:
+    build:
+      context: ./upgrade
+      dockerfile: Dockerfile
+      args:
+        GIT_USER_NAME: ${GIT_USER_NAME}
+        GIT_USER_EMAIL: ${GIT_USER_EMAIL}
+        GIT_CORE_EDITOR: ${GIT_CORE_EDITOR}
+        UID: ${HOST_UID}
+        GID: ${HOST_GID}
+    container_name: ${APP_NAME}-upgrade
+    user: "${HOST_UID}:${HOST_GID}"
+    environment:
+      HOME: "/home/amr"
+    volumes:
+      - ../app/:/var/www/html/
+      - ../upgrade:/var/www/upgrade
+      - ~/.ssh:/home/amr/.ssh:ro
+    networks:
+      - frontend
+      - backend
+
   mysql:
     image: mysql
     container_name: ${APP_NAME}-mysql

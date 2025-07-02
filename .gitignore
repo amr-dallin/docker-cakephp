@@ -1,4 +1,5 @@
 .env
+mysql/
 
 # OS generated files #
 ######################
